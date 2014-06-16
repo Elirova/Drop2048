@@ -43,7 +43,7 @@ public class WinLosePopUp extends PopUp {
 		backButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
-		    	game.setScreen(new MenuScreen());
+				game.setScreen(new MenuScreen());
 		        return false;
 		    } 
 		} );

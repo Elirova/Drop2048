@@ -18,6 +18,5 @@ public class Background extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		bg.draw(batch, getX(), getY(), getWidth(), getHeight());
-//		System.out.println("X " + getX() + " Y " +  getY() + " W " + getWidth() + " H " + getHeight());
 	}
 }

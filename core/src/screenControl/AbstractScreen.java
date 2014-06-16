@@ -24,14 +24,15 @@ import drop2048.Drop2048;
  */
 public abstract class AbstractScreen implements Screen {
 	protected static Drop2048 game;     
-	protected static BitmapFont font;
+	protected static BitmapFont font, fontWhite;
     protected Stage stage;
     protected Batch batch;
     protected static Skin skin;
     protected Table table;
-    private Texture tbg;
-	private Image bg;
+    protected Texture tbg;
+	protected Image bg;
 	protected boolean pause;
+	protected static int h, w;
 	
 	/**
      * Constructor
@@ -66,6 +67,10 @@ public abstract class AbstractScreen implements Screen {
 	 */
     public static BitmapFont getFont() { 
         return font; 
+    }
+
+    public static BitmapFont getFontWhite() { 
+        return fontWhite; 
     }
  
     /**
@@ -121,7 +126,9 @@ public abstract class AbstractScreen implements Screen {
 	
 	public void drawStage(float delta){
 		if(!pause) stage.act(delta);
+//		table.debug();
 		stage.draw();
+//		Table.drawDebug(stage);
 	}
 
 	public void setPause(boolean pause) {
@@ -146,8 +153,17 @@ public abstract class AbstractScreen implements Screen {
 	}
 	
 	public static void load() {
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json")); 
-        font = new BitmapFont(Gdx.files.internal("skin/default.fnt"));
+        skin = new Skin(Gdx.files.internal("skin/skin.json")); 
+        h = Gdx.graphics.getHeight();
+		w = Gdx.graphics.getWidth();
+		
+        font = skin.getFont("font");
+        font.setScale(w/1400f); // Redimensión de la fuente. Mirar si se puede hacer de otra forma
+        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        
+        fontWhite = skin.getFont("font-white");
+        fontWhite.setScale(w/1400f);
+        fontWhite.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 	
 	public static void disposeStatic() {

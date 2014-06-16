@@ -3,6 +3,7 @@ package PopUps;
 import screenControl.AbstractScreen;
 import screenControl.GameScreen;
 import screenControl.MenuScreen;
+import ProfileSettings.Profile;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -51,7 +52,8 @@ public class GamePausePopUp extends PopUp {
 		exitButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
-		    	Gdx.app.log( Drop2048.LOG, "Pulsado botón exit" );
+//				Profile.setScore(score.getScore(), status);
+		    	Drop2048.save();
 		    	game.setScreen(new MenuScreen());
 		        return false;
 		    } 

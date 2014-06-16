@@ -3,6 +3,7 @@ package drop2048;
 import screenControl.AbstractScreen;
 import screenControl.GameScreen;
 import screenControl.GameSelectScreen.Status;
+import screenControl.MenuScreen;
 import Entities.Block;
 import PopUps.PopUp;
 import ProfileSettings.Profile;
@@ -23,14 +24,20 @@ public class Drop2048 extends Game implements ApplicationListener  {
 		load();
 		PopUp.setGame(this);
 		AbstractScreen.setGame(this);
-    	setScreen( new GameScreen(Status.EASY));
+//		setScreen( new MenuScreen());
+		setScreen( new GameScreen(Status.EASY));
 	}
 
 	public static void save() {
+		if(profile == null) profile = new Profile();
 		ProfileSerializer.write(profile);
 	}
 	public static void load() {
 		profile = ProfileSerializer.read();
+	}
+	
+	public static void clearProfile() {
+		
 	}
 	
 	@Override

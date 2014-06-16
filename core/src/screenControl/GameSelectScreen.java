@@ -1,25 +1,62 @@
 package screenControl;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class GameSelectScreen  extends AbstractScreen {
 	public enum Status {
-		EASY(50,5), NORMAL(65,5), HARD(65,3), HARDCORE(70,3);
+		EASY(h*0.1f, h*0.001f, 5, "easy", 3), NORMAL(h*0.12f, h*0.0011f, 5, "normal", 2), HARD(h*0.15f, h*0.0013f,  3, "hard", 1),
+		EXTREME(h*0.18f, h*0.0015f, 3, "extreme", 1);
 		
-		int velocity, interval;
+		int velocity, interval, minFree;
+		float incVel;
+		String name;
 		
-		private Status(int velocity, int interval) {
-			this.velocity = velocity;
+		private Status(float velocity, float incVel, int interval, String name, int minFree) {
+			this.velocity = (int) velocity;
+			this.incVel = incVel;
 			this.interval = interval;
+			this.name = name;
+			this.minFree = minFree;
 		}
 		
+		/**
+		 * Devuelve el número de columnas que debe de haber siempre libres.
+		 * @return
+		 */
+		public int getMinFree() {
+			return minFree;
+		}
+		
+		/**
+		 * Devuelve el nombre de la dificultad.
+		 * @return
+		 */
+		public String getName() {
+			return name;
+		}
+		
+		/**
+		 * Devuelve la velocidad inicial de la dificultad.
+		 * @return
+		 */
 		public int getVelocity() {
 			return velocity;
 		}
 		
+		/**
+		 * Devuelve el incremento de velocidad por bloque.
+		 * @return
+		 */
+		public float getIncreaseVelocity() {
+			return incVel;
+		}
+		
+		/**
+		 * Devuelve el intervalo de números que aparecerán con respecto al número del jugador.
+		 * @return
+		 */
 		public int getInterval() {
 			return interval;
 		}
@@ -63,25 +100,24 @@ public class GameSelectScreen  extends AbstractScreen {
 		bHardcore.addListener(new InputListener() {
 		    @Override
 			public boolean touchDown (InputEvent  event, float x, float y, int pointer, int button) {                   
-		    	game.setScreen(new GameScreen(Status.HARDCORE));
+		    	game.setScreen(new GameScreen(Status.EXTREME));
 		        return false;
 		    } } );
 	}
 	
 	private void createTable(){
 		table = super.getTable();
-    	int h = Gdx.graphics.getHeight();
-    	
-        table.add().spaceBottom(h*0.1f);
+
+        table.add(bEasy).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
         table.row();
-        table.add(bEasy);
+        table.add(bNormal).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
         table.row();
-        table.add(bNormal);
+        table.add(bHard).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
         table.row();
-        table.add(bHard);
+        table.add(bHardcore).size(w*0.5f, h*0.1f);
         table.row();
-        table.add(bHardcore);
-        table.row();
+		table.add().height(h*0.1f);
+		table.bottom();
 	}
 	
 	@Override

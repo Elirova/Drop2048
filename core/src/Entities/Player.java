@@ -1,34 +1,43 @@
 package Entities;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 
 
 public class Player extends Block {
+	private int multScore;
 	
 	public Player(int number) {
-		super(number, 1);
-		this.setBounds(Gdx.graphics.getWidth()*0.5f-bounds.getWidth()/2, Gdx.graphics.getHeight()*0.22f, size, size);
+		super(number, 1, 0);
+		multScore = 1;
 	}
 	
 	public void updateNumber() {
-		game.addScore(pow);
+		game.addScore(pow*multScore*2);
 		pow++;
+		if(pow > 11) {
+			pow = 1;
+			multScore++;
+			color = (color+1)%11;
+		}
 		number = (int)Math.pow(base, pow);
-		bg = bgBlocks[(pow-1)%11];
+		bg2 = bgBlocks[pow];
+		bg1 = bgBlocks[color];
 	}
 	
 	public void move(float x) {
-		if(x > 15) x = 15;
-		else if(x < -15) x = -15;
-		bounds.x += x;
+		bounds.x += x-size/2;
 		if(bounds.x < 0) bounds.x = 0;
 		else if(bounds.x > w - size) bounds.x = w - size;
 		setX(bounds.x);
 	}
 
 	@Override
-    public void act(float delta){
-    	//super.act(delta);
-    }
+	public void setBounds(float x, float y, float width, float height) {
+		bounds = new Rectangle(x, y, width, height);
+		super.setBounds(x, y, width, height);
+	}
+	
+	@Override
+    public void act(float delta){ }
 	
 }

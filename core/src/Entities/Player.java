@@ -30,6 +30,10 @@ public class Player extends Block {
 		else if(bounds.x > w - size) bounds.x = w - size;
 		setX(bounds.x);
 	}
+	
+	public int getPow() {
+		return pow;
+	}
 
 	@Override
 	public void setBounds(float x, float y, float width, float height) {

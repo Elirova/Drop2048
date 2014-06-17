@@ -1,12 +1,13 @@
 package drop2048;
 
 import screenControl.AbstractScreen;
-import screenControl.GameSelectScreen;
+import Entities.Block;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
@@ -19,13 +20,7 @@ public class Scroll extends ScrollPane {
     private String emptyLabel;   
            
     /**
-     * Constructor
-     * @param items To create items use ScrollItem.formItems(names, urls)
-     * @param style
-     * @param listStyle
-     * @param placeholder It must not be empty!
-     * @param useLocalStorage If true, downloaded images are stored relative to private storage of the app.
-     *                      Otherwise, they are stored relative to SD card root (Neends WRITE_EXTERNAL_STORAGE permission).        
+     * Constructor.        
      */
     public Scroll() {            
         super(null);    
@@ -65,13 +60,10 @@ public class Scroll extends ScrollPane {
         private Scroll Scroll;
         private ScrollItem[] items;
         private float prefWidth, prefHeight;
-        private float itemSize = (int) (Gdx.graphics.getWidth()*0.1f);
-        private float textOffsetX, textOffsetY;
-        private float coefH;
+        private float itemSize = (int) (Gdx.graphics.getWidth()*0.25f);
+        private float textOffsetX;
        
         public MyRawList (ScrollItem[] items, Scroll Scroll) {
-            coefH = Gdx.graphics.getHeight()/320f;
-            
             setItems(items);
             setWidth(getPrefWidth());
             setHeight(getPrefHeight());            
@@ -80,7 +72,7 @@ public class Scroll extends ScrollPane {
                        
         @Override
         public void draw (Batch batch, float parentAlpha) {
-            BitmapFont font = AbstractScreen.getFont();
+            BitmapFont font = AbstractScreen.getFont(), fontWhite = AbstractScreen.getFontWhite();
 
             float x = getX();
             float y = getY();
@@ -106,16 +98,17 @@ public class Scroll extends ScrollPane {
                 }
                
                 if(isDrawn) {
-                	// Imagen del personaje
-//                	items[i].getImage().setBounds(x, y + itemY - textOffsetY*coefH - items[i].getImage().getHeight(), itemSize, itemSize);
-//                	items[i].getImage().draw(batch, parentAlpha);
+                	ScrollItem.bg.draw(batch, x, y + itemY - itemSize, getWidth(), itemSize*0.8f);
+                	items[i].getBg1().draw(batch, x + itemSize*0.25f, y + itemY - itemSize*0.9f, itemSize*0.6f, itemSize*0.6f);
+                	items[i].getBg2().draw(batch, x + itemSize*0.3f, y - itemSize*0.85f + itemY, itemSize*0.5f, itemSize*0.5f);
                 	
                 	// Puntuación
-                	font.draw(batch, items[i].getPoints(),
-                             x + textOffsetX + getWidth()*0.25f,
-                             y + itemY - textOffsetY*coefH - font.getBounds(items[i].getPoints()).height/2);
-                }
-                                                       
+                	float scale = fontWhite.getScaleY();
+                	fontWhite.setScale(itemSize/(getWidth()*0.7f));
+                	fontWhite.draw(batch, items[i].getPoints(),
+                             x + textOffsetX + getWidth()*0.35f, y + itemY - itemSize/2);
+                	fontWhite.setScale(scale);
+                }                              
                 itemY -= itemSize;
             }
         }
@@ -147,47 +140,23 @@ public class Scroll extends ScrollPane {
    
     /************************ LIST ITEM ************************/
     public static class ScrollItem implements Comparable<ScrollItem>{  
-	    private GameSelectScreen.Status status;
-//		private Image image;
 		private int pointsint;
-        private String points;      
-//        private static Texture tex;
-//        private static TextureRegion[][] fronts;
+        private String points;
+        private NinePatch bg1, bg2;
+        public static NinePatch bg;
         
-        public ScrollItem(GameSelectScreen.Status status, int points){
-            this.status = status;
-            this.pointsint = points;
-            this.points = String.valueOf(points);
-            
-            switch(this.status) {
-				case HARD:
-					break;
-				case EXTREME:
-					break;
-				case NORMAL:
-					break;
-				default: // Easy
-					break;
-            }
-//            image.setSize(Gdx.graphics.getHeight()*0.17f, Gdx.graphics.getHeight()*0.17f);
+        public ScrollItem(Vector3 values){
+            this.pointsint = (int) values.x;
+            this.points = String.valueOf(pointsint);
+            bg1 = Block.getBgBlocks()[(int) values.z];
+			bg2 = Block.getBgBlocks()[(int) values.y];
+			if(bg == null) bg = AbstractScreen.getSkin().getPatch("bg-score-transparent");
         }
-        
-        public static void initialize() {
-//        	tex = new Texture(Gdx.files.internal("images/front.png"));
-//    		fronts = TextureRegion.split(tex, 64, 64);
-        }
-		
-		/**
-         * Forms array of items (size of arrays must be equal)
-         * @param texts If you want to have several columns, you should split them by SEPARATOR
-         * @param urls URLs of the images which has to be downloaded
-         * @return
-         */
-        public static ScrollItem[] formItems(GameSelectScreen.Status[] status, int[] points) {
-            if(status.length!=points.length) return null;                             
+
+        public static ScrollItem[] formItems(Vector3[] points) {                         
             ScrollItem[] listItems = new ScrollItem[points.length];                       
             for (int i=0; i<points.length; i++)         
-              listItems[i] = new ScrollItem(status[i], points[i]);                             
+              listItems[i] = new ScrollItem(points[i]);                             
             return listItems;
         }
 
@@ -207,62 +176,17 @@ public class Scroll extends ScrollPane {
 			this.points = points;
 		}
 
+		public NinePatch getBg1() {
+			return bg1;
+		}
+
+		public NinePatch getBg2() {
+			return bg2;
+		}
+
 		@Override
 		public int compareTo(ScrollItem o) {
 			return (o.getPointsint() >= pointsint)? 1 : -1;
 		}
-    }      
-   
-    public static class ImagePow2 {
-           
-            static int pow2[] = {2,4,8,16,32,64,128,256,512,1024,2048,4096,8192};          
-            public static boolean isPow2(Pixmap pixmap){
-                    boolean isWidthPow2 = false, isHeightPow2 = false;
-                    for(int i=0; i<pow2.length; i++){
-                            if(pow2[i]==pixmap.getWidth()) isWidthPow2=true;
-                            if(pow2[i]==pixmap.getHeight()) isHeightPow2=true;
-                    }
-                    return isWidthPow2&&isHeightPow2;
-            }
-            private static int getPow2(int value){
-                    int diff = value;
-                    int tmp = value;
-                    int minVal = value;
-                    for(int i=0; i<pow2.length; i++){
-                            diff = Math.abs(value - pow2[i]);
-                            if(tmp>diff){
-                                    tmp=diff;
-                                    minVal = pow2[i];
-                            }
-                    }
-                    return minVal;
-            }
-           
-            public static Pixmap getPow2Pixmap(Pixmap pixmap){
-                int width = getPow2(pixmap.getWidth());
-		        int height = getPow2(pixmap.getHeight());
-		        Pixmap updatedPixmap = new Pixmap(width, height, pixmap.getFormat());
-		        updatedPixmap.drawPixmap(pixmap, 0, 0, pixmap.getWidth(), pixmap.getHeight(), 0, 0, width, height);
-		        return updatedPixmap;
-            }                              
-    }
+    }   
 }
-
-/**How to use**/
-/*
-Scroll myLazyListTop100 = new Scroll(null, scrollPaneStyle, listStyle,
-                            new Texture(Gdx.files.internal("skins/unknown_flag.png")), false);                             
-            myLazyListTop100.setEnabled(false);
-            String splitter = Scroll.SEPARATOR;
-      //MyDrawable implements Drawable
-myLazyListTop100.setHeaders("#"+splitter+"Nickname"+splitter+"Location"+splitter+"Score"+splitter+"Flag",
-                            new MyDrawable(new NinePatch(new Texture(Gdx.files.internal("images/background_list.png")))));
-            myLazyListTop100.setHeadersColor(new Color(0, 1, 1, 1));
-           
-myLazyListTop100.setBounds(5, 5, width, height );
-    myLazyListTop100.setEnabled(false);
-    myLazyListTop100.setSelectedIndex(-1);
-    myLazyListTop100.setItems(null);
-    myLazyListTop100.setEmptyLabel("Loading...");
-    stage.addActor(myLazyListTop100);
-*/

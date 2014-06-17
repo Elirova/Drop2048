@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import drop2048.Drop2048;
+
 public class Block extends Actor {
 	public enum Type {NUMBER, VELINC, VELDEC, RESET, RANDOM, EXTRA, BOMB}
 	
@@ -48,7 +50,7 @@ public class Block extends Actor {
     	createBlock();
     	
     	if(this instanceof Player) {
-    		setBounds((w*0.5f)-(size/2f), h*0.22f, size, size);
+    		setBounds((w*0.5f)-(size/2f), Drop2048.myRequestHandler.getHeightAd()+h*0.15f, size, size);
     	} else {
     		locateBlock();
     	}
@@ -110,10 +112,17 @@ public class Block extends Actor {
     	}
     }
     
-    public static void initialize(GameScreen game) {
-    	Block.free = NUMBLOCKS;
+    public static NinePatch[] getBgBlocks() {
+    	return bgBlocks;
+    }
+    
+    public static void setGameScreen(GameScreen game) {
     	Block.game = game;
     	Block.player = game.getPlayer();
+    }
+    
+    public static void initialize() {
+    	Block.free = NUMBLOCKS;
     	Block.blockTexture = new Texture(Gdx.files.internal("Images/blocks.png"));
     	bgBlocks = new NinePatch[18];
     	int cont = 0;
@@ -229,7 +238,7 @@ public class Block extends Actor {
     		pos[position] = true;
     		position = -1;
     	}
-    	if (bounds.y <= h*0.35f && collides()) {
+    	if (bounds.y <= Drop2048.myRequestHandler.getHeightAd()+h*0.15f+size && collides()) {
     		apply();
     		game.removeEntity(this);
     	} else if(bounds.y < h*0.1f) dead();
@@ -246,7 +255,7 @@ public class Block extends Actor {
     	bg1.draw(batch, bounds.x, bounds.y, bounds.width, bounds.height);
     	if(type == Type.NUMBER) {
     		bg2.draw(batch, bounds.x+size*0.05f, bounds.y+size*0.05f, sizeSmall, sizeSmall);
-    		float scale = font.getScaleX();
+    		float scale = font.getScaleY();
     		font.setScale(scaleFont);
     		font.drawMultiLine(batch, String.valueOf(number), bounds.x, bounds.y + size/2 + font.getCapHeight()/2, size, BitmapFont.HAlignment.CENTER);
     		font.setScale(scale);

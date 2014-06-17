@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import screenControl.GameSelectScreen.Status;
 import ProfileSettings.Profile;
 
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -26,7 +27,6 @@ public class ScoreScreen extends AbstractScreen {
             super();
             status = Status.EASY;
             setBackground("background/bg.png");
-            ScrollItem.initialize();
             scroll = new Scroll();
             initializeScores(status);
             
@@ -61,7 +61,7 @@ public class ScoreScreen extends AbstractScreen {
         	
         	table = super.getTable();
         	table.center().bottom();
-        	table.add(scroll).size(w*0.9f, h*0.7f).colspan(4);
+        	table.add("Scores").colspan(4);
         	table.row();
         	table.add().height(h*0.02f);
         	table.row();
@@ -69,6 +69,8 @@ public class ScoreScreen extends AbstractScreen {
         	table.add(difficultyButton[1]).size(w*0.25f, h*0.05f).uniform();
         	table.add(difficultyButton[2]).size(w*0.25f, h*0.05f).uniform();
         	table.add(difficultyButton[3]).size(w*0.25f, h*0.05f).uniform();
+        	table.row();
+        	table.add(scroll).size(w*0.9f, h*0.65f).colspan(4);
         	table.row();
         	table.add().height(h*0.02f);
         	table.row();
@@ -86,11 +88,11 @@ public class ScoreScreen extends AbstractScreen {
         if(Profile.getMaxScore(status) == 0) { // No hay ninguna puntuación máxima
         	scroll.setItems(null);
         } else {
-        	ArrayList<Integer> intitems = Profile.getScore(status);
+        	ArrayList<Vector3> intitems = Profile.getScore(status);
         	ArrayList<ScrollItem> items = new ArrayList<ScrollItem>();
-        	for (Integer item : intitems) {
-        		if(item <= 0) break;
-        		else items.add(new ScrollItem(status, item));
+        	for (Vector3 item : intitems) {
+        		if(item.x <= 0) break;
+        		else items.add(new ScrollItem(item));
         	}
             scroll.setItems(items.toArray(new ScrollItem[0]));
         }

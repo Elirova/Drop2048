@@ -46,7 +46,7 @@ public class GameScreen extends AbstractScreen {
         	
             // Inicializaciones de clase
             GamePausePopUp.setScreen(this);
-            Block.initialize(this);
+            Block.setGameScreen(this);
             
             // Inicialización de la zona de menú y puntuaciones
             menu = new MenuBg(); 
@@ -136,8 +136,7 @@ public class GameScreen extends AbstractScreen {
     public void winGame() {
     	winLosePopUp.show(true);
     	setPause(true);
-    	System.out.println(score);
-    	Profile.setScore(scoreint, status);
+    	Profile.setScore(status, scoreint, player.getPow(), player.getNumberColor());
     	Drop2048.save();
     }
     
@@ -145,7 +144,7 @@ public class GameScreen extends AbstractScreen {
     	time=0;
     	winLosePopUp.show(false);
     	setPause(true);
-    	Profile.setScore(scoreint, status);
+    	Profile.setScore(status, scoreint, player.getPow(), player.getNumberColor());
     	Drop2048.save();
     }
     
@@ -180,7 +179,7 @@ public class GameScreen extends AbstractScreen {
     }
     
     private void checkForBlock() {
-    	float change = 5 - velocity*0.02f;
+    	float change = 5 - velocity*0.025f;
     	if(time >= change) {
 			time -= change;
 			if(Block.getFree() > status.getMinFree()) addBlock(getNewBlock()); // Queda más de un hueco libre
@@ -259,7 +258,6 @@ public class GameScreen extends AbstractScreen {
 	
 	public void updateVelocity() {
 		changeVelocity(status.getIncreaseVelocity());
-		System.out.println(velocity);
 	}
 
 	public void addEntity(Block block) {

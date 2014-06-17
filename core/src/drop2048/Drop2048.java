@@ -26,6 +26,7 @@ public class Drop2048 extends Game implements ApplicationListener  {
 		load();
 		PopUp.setGame(this);
 		AbstractScreen.setGame(this);
+		Block.initialize();
 		setScreen( new MenuScreen());
 //		setScreen( new GameScreen(Status.EASY));
 		myRequestHandler.showAds(true);

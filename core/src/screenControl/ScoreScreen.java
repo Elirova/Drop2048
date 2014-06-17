@@ -8,6 +8,7 @@ import ProfileSettings.Profile;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 import drop2048.Scroll;
 import drop2048.Scroll.ScrollItem;
@@ -50,18 +51,35 @@ public class ScoreScreen extends AbstractScreen {
         		    @Override
         			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
         		        status = Status.values()[aux];
+        		        initializeScores(status);
+        		        select(aux);
         		        return false;
         		    } 
         		} );
         	}
+        	select(0);
         	
         	table = super.getTable();
-        	table.bottom();
-        	table.add(scroll).size(w*0.95f, h*0.8f);
+        	table.center().bottom();
+        	table.add(scroll).size(w*0.9f, h*0.7f).colspan(4);
         	table.row();
-        	table.add(backButton).size(w*0.4f, h*0.1f);
+        	table.add().height(h*0.02f);
         	table.row();
-        	table.add().size(0,h*0.05f);
+        	table.add(difficultyButton[0]).size(w*0.25f, h*0.05f).uniform();
+        	table.add(difficultyButton[1]).size(w*0.25f, h*0.05f).uniform();
+        	table.add(difficultyButton[2]).size(w*0.25f, h*0.05f).uniform();
+        	table.add(difficultyButton[3]).size(w*0.25f, h*0.05f).uniform();
+        	table.row();
+        	table.add().height(h*0.02f);
+        	table.row();
+        	table.add(backButton).size(w*0.4f, h*0.07f).colspan(4);
+        	table.row();
+        	table.add().size(0,h*0.1f);
+    }
+    
+    public void select(int aux) {
+    	for(int i = 0; i < Status.values().length; i++)
+    		difficultyButton[i].setStyle(skin.get((i == aux)? "red"+(aux+1) : "default", TextButtonStyle.class));
     }
     
     public void initializeScores(Status status) {
@@ -74,11 +92,8 @@ public class ScoreScreen extends AbstractScreen {
         		if(item <= 0) break;
         		else items.add(new ScrollItem(status, item));
         	}
-        	System.out.println(items);
-//        	System.out.println((ScrollItem[]) items.toArray());
             scroll.setItems(items.toArray(new ScrollItem[0]));
         }
-        
         scroll.setEnabled(false);
     }
 }

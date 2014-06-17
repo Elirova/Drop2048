@@ -12,8 +12,8 @@ public class MenuBg extends Actor {
 	private static float endMenu, w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
 	
 	public MenuBg() {
-		bg = AbstractScreen.getSkin().getPatch("bg-info");
-		bgScore = AbstractScreen.getSkin().getPatch("bg-info");
+		bg = AbstractScreen.getSkin().getPatch("bg-menu");
+		bgScore = AbstractScreen.getSkin().getPatch("bg-score");
 		setBounds(0, Drop2048.myRequestHandler.getHeightAd(), w, h*0.14f);
 		MenuBg.endMenu = getHeight() + Drop2048.myRequestHandler.getHeightAd();
 	}

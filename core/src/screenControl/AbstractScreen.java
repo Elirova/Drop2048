@@ -127,9 +127,9 @@ public abstract class AbstractScreen implements Screen {
 	
 	public void drawStage(float delta){
 		if(!pause) stage.act(delta);
-		table.debug();
+//		table.debug();
 		stage.draw();
-		Table.drawDebug(stage);
+//		Table.drawDebug(stage);
 	}
 
 	public void setPause(boolean pause) {
@@ -159,7 +159,7 @@ public abstract class AbstractScreen implements Screen {
 		w = Gdx.graphics.getWidth();
 		
         font = skin.getFont("font");
-        font.setScale(w/1400f); // Redimensión de la fuente. Mirar si se puede hacer de otra forma
+        font.setScale(w/1000f); // Redimensión de la fuente. Mirar si se puede hacer de otra forma
         font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         
         fontWhite = skin.getFont("font-white");

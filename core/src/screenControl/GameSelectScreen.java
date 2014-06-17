@@ -71,10 +71,10 @@ public class GameSelectScreen  extends AbstractScreen {
 	}
 
 	private void createButtons() {
-		bEasy = new TextButton("Easy", getSkin());
-		bNormal = new TextButton("Normal", getSkin());
-		bHard = new TextButton("Hard", getSkin());
-		bHardcore = new TextButton("Hardcore", getSkin());
+		bEasy = new TextButton("Easy", getSkin(), "red1");
+		bNormal = new TextButton("Normal", getSkin(), "red2");
+		bHard = new TextButton("Hard", getSkin(), "red3");
+		bHardcore = new TextButton("Hardcore", getSkin(), "red4");
 		
 		bEasy.addListener(new InputListener() {
 		    @Override
@@ -108,15 +108,15 @@ public class GameSelectScreen  extends AbstractScreen {
 	private void createTable(){
 		table = super.getTable();
 
-        table.add(bEasy).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
+        table.add(bEasy).size(w, h*0.1f).spaceBottom(h*0.03f);
         table.row();
-        table.add(bNormal).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
+        table.add(bNormal).size(w, h*0.1f).spaceBottom(h*0.03f);
         table.row();
-        table.add(bHard).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
+        table.add(bHard).size(w, h*0.1f).spaceBottom(h*0.03f);
         table.row();
-        table.add(bHardcore).size(w*0.5f, h*0.1f);
+        table.add(bHardcore).size(w, h*0.1f);
         table.row();
-		table.add().height(h*0.1f);
+		table.add().height(h*0.15f);
 		table.bottom();
 	}
 	

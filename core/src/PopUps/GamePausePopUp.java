@@ -3,9 +3,9 @@ package PopUps;
 import screenControl.AbstractScreen;
 import screenControl.GameScreen;
 import screenControl.MenuScreen;
-import ProfileSettings.Profile;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -55,7 +55,10 @@ public class GamePausePopUp extends PopUp {
 		        return false;
 		    } 
 		} );
-		
+		table.add("Game paused");
+		table.row();
+		table.add().height(h*0.03f);
+		table.row();
 		table.add(resumeButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.1f);
 		table.row();
 		table.add().height(h*0.03f);

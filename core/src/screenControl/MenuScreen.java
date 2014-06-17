@@ -20,7 +20,7 @@ public class MenuScreen extends AbstractScreen {
     
     private void createButtons() {
     	// Inicialize buttons
-        startGameButton = new TextButton("Start", getSkin());
+        startGameButton = new TextButton("Play", getSkin(), "green");
         scoresButton = new TextButton("Scores", getSkin());
         optionsButton = new TextButton("Options", getSkin());
         exitButton = new TextButton("Exit", getSkin()); 
@@ -60,15 +60,15 @@ public class MenuScreen extends AbstractScreen {
     private void createTable(){
     	table = super.getTable();
     	
-		table.add(startGameButton).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f); 
+		table.add(startGameButton).size(w, h*0.1f).spaceBottom(h*0.03f); 
 		table.row();
-		table.add(scoresButton).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
+		table.add(scoresButton).size(w, h*0.1f).spaceBottom(h*0.03f);
 		table.row(); 
-		table.add(optionsButton).size(w*0.5f, h*0.1f).spaceBottom(h*0.02f);
+		table.add(optionsButton).size(w, h*0.1f).spaceBottom(h*0.03f);
 		table.row();
-		table.add(exitButton).size(w*0.5f, h*0.1f);
+		table.add(exitButton).size(w, h*0.1f);
 		table.row();
-		table.add().size(0, h*0.1f);
+		table.add().size(0, h*0.15f);
 		table.bottom();
     }
 }

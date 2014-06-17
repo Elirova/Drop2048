@@ -10,7 +10,7 @@ public class Background extends Actor {
 	private NinePatch bg;
 	
 	public Background(float x, float y, float width, float height) {
-		this.bg = AbstractScreen.getSkin().getPatch("bg-select");
+		this.bg = AbstractScreen.getSkin().getPatch("bg-menu");
 		setX(x);
 		setY(y);
 		setHeight(height);

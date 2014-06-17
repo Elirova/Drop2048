@@ -1,8 +1,7 @@
 package drop2048;
 
 import screenControl.AbstractScreen;
-import screenControl.GameScreen;
-import screenControl.GameSelectScreen.Status;
+import screenControl.MenuScreen;
 import Entities.Block;
 import PopUps.PopUp;
 import ProfileSettings.Profile;
@@ -27,8 +26,8 @@ public class Drop2048 extends Game implements ApplicationListener  {
 		load();
 		PopUp.setGame(this);
 		AbstractScreen.setGame(this);
-//		setScreen( new MenuScreen());
-		setScreen( new GameScreen(Status.EASY));
+		setScreen( new MenuScreen());
+//		setScreen( new GameScreen(Status.EASY));
 		myRequestHandler.showAds(true);
 	}
 

@@ -19,13 +19,10 @@ public class DesktopLauncher implements IActivityRequestHandler {
 	}
 
 	@Override
-	public void showAds(boolean show) {
-		// TODO Auto-generated method stub
-	}
+	public void showAds(boolean show) { }
 
 	@Override
 	public int getHeightAd() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

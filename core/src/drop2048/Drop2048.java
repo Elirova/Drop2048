@@ -3,7 +3,6 @@ package drop2048;
 import screenControl.AbstractScreen;
 import screenControl.GameScreen;
 import screenControl.GameSelectScreen.Status;
-import screenControl.MenuScreen;
 import Entities.Block;
 import PopUps.PopUp;
 import ProfileSettings.Profile;
@@ -17,7 +16,11 @@ import com.badlogic.gdx.Screen;
 public class Drop2048 extends Game implements ApplicationListener  {	
 	public static final String LOG = Drop2048.class.getSimpleName();
 	public static Profile profile;
-	
+	public static IActivityRequestHandler myRequestHandler;
+
+    public Drop2048(IActivityRequestHandler handler) {
+        myRequestHandler = handler;
+    }
 	@Override
 	public void create() {		
 		Gdx.app.log( Drop2048.LOG, "Creating game" ); 
@@ -26,12 +29,14 @@ public class Drop2048 extends Game implements ApplicationListener  {
 		AbstractScreen.setGame(this);
 //		setScreen( new MenuScreen());
 		setScreen( new GameScreen(Status.EASY));
+		myRequestHandler.showAds(true);
 	}
 
 	public static void save() {
 		if(profile == null) profile = new Profile();
 		ProfileSerializer.write(profile);
 	}
+	
 	public static void load() {
 		profile = ProfileSerializer.read();
 	}
@@ -70,6 +75,7 @@ public class Drop2048 extends Game implements ApplicationListener  {
 
 	@Override
 	public void resume() {
+		//isGooglePlayServicesAvailable();
 		super.resume();
 		AbstractScreen.load();
 		//load();

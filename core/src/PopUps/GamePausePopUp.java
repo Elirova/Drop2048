@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import drop2048.Drop2048;
 
 public class GamePausePopUp extends PopUp {
-	private TextButton resumeButton, statsButton, exitButton;
+	private TextButton resumeButton, resetButton, exitButton;
 	protected static GameScreen gameScreen;
 	
 	public GamePausePopUp(Batch batch) {
@@ -32,18 +32,16 @@ public class GamePausePopUp extends PopUp {
 		resumeButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
-		    	Gdx.app.log( Drop2048.LOG, "Pulsado botón menu" );
 		    	gameScreen.setGamePause(false);
 		        return false;
 		    } 
 		} );
 		
-		statsButton = new TextButton("Stats", AbstractScreen.getSkin());
-		statsButton.addListener(new InputListener() { 
+		resetButton = new TextButton("Reset", AbstractScreen.getSkin());
+		resetButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
-		    	Gdx.app.log( Drop2048.LOG, "Pulsado botón menu" );
-		    	System.out.println("Pulsado boton para cambiar los stats");
+				game.setScreen(new GameScreen(gameScreen.getStatus()));
 		        return false;
 		    } 
 		} );
@@ -52,17 +50,20 @@ public class GamePausePopUp extends PopUp {
 		exitButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
-//				Profile.setScore(score.getScore(), status);
 		    	Drop2048.save();
 		    	game.setScreen(new MenuScreen());
 		        return false;
 		    } 
 		} );
 		
-		table.add(resumeButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.15f);
+		table.add(resumeButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.1f);
 		table.row();
-		table.add(statsButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.15f);
+		table.add().height(h*0.03f);
 		table.row();
-		table.add(exitButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.15f);
+		table.add(resetButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.1f);
+		table.row();
+		table.add().height(h*0.03f);
+		table.row();
+		table.add(exitButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.1f);
 	}
 }

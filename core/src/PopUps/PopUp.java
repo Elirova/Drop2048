@@ -29,8 +29,7 @@ public abstract class PopUp {
 		popUpStage = new Stage(new ScreenViewport(), batch);
 		h = Gdx.graphics.getHeight();
         w = Gdx.graphics.getWidth();
-		bg = new Background(new NinePatch(new TextureRegion(popupTexture, 0, 0, 32, 32), 14, 14, 14, 14),
-				w*0.2f, h*0.2f, w*0.6f, h*0.6f); 
+		bg = new Background(w*0.2f, h*0.2f, w*0.6f, h*0.6f); 
 		popUpStage.addActor(bg);
 		initializeTable();
 	}

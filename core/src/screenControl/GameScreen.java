@@ -17,15 +17,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
-import drop2048.Background;
 import drop2048.Drop2048;
+import drop2048.MenuBg;
 
 public class GameScreen extends AbstractScreen {
 	private Status status;
 	private GamePausePopUp pauseMenu;
 	private WinLosePopUp winLosePopUp;
 	private Player player;
-	protected Background menu;
+	protected MenuBg menu;
 	private int h, w;
 	private float velocity;
 	private float time;
@@ -49,7 +49,7 @@ public class GameScreen extends AbstractScreen {
             Block.initialize(this);
             
             // Inicialización de la zona de menú y puntuaciones
-            menu = new Background(AbstractScreen.getSkin().getPatch("bg-select"), 0, h*0.1f-11, w+11, h*0.1f+11); 
+            menu = new MenuBg(); 
             bg.setZIndex(0);
             menu.setZIndex(4);
         	stage.addActor(menu);
@@ -142,6 +142,7 @@ public class GameScreen extends AbstractScreen {
     }
     
     public void loseGame() {
+    	time=0;
     	winLosePopUp.show(false);
     	setPause(true);
     	Profile.setScore(scoreint, status);
@@ -201,16 +202,20 @@ public class GameScreen extends AbstractScreen {
         
         //Add buttons to the table
         getTable();
-        table.bottom();
-        table.add("Score").spaceLeft(w*0.1f);
+        table.center().bottom();
+        table.add().width(w*0.3f);
+        table.add().width(w*0.3f);
+        table.add().width(w*0.3f);
+        table.row();
+        table.add("Score");
         table.add();
-        table.add("Best").spaceRight(w*0.1f);
+        table.add("Best");
         table.row();
-        table.add(score).height(h*0.05f).spaceLeft(w*0.1f).uniform();
-        table.add(menuButton).size(w*0.1f, w*0.1f).spaceRight(w*0.15f).spaceLeft(w*0.15f);
-        table.add(maxScore).height(h*0.05f).spaceRight(w*0.1f).uniform();
+        table.add(score);
+        table.add(menuButton).size(w*0.2f, h*0.05f);
+        table.add(maxScore);
         table.row();
-        table.add().height(h*0.1f);
+        table.add().height(heightAd+h*0.02f);
     }
     
     public Player getPlayer(){

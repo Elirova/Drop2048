@@ -32,7 +32,7 @@ public abstract class AbstractScreen implements Screen {
     protected Texture tbg;
 	protected Image bg;
 	protected boolean pause;
-	protected static int h, w;
+	protected static int h, w, heightAd;
 	
 	/**
      * Constructor
@@ -46,6 +46,7 @@ public abstract class AbstractScreen implements Screen {
 	
 	public static void setGame(Drop2048 game) {
 		AbstractScreen.game = game;
+		AbstractScreen.heightAd = Drop2048.myRequestHandler.getHeightAd();
 		AbstractScreen.load();
 	}
 	
@@ -126,9 +127,9 @@ public abstract class AbstractScreen implements Screen {
 	
 	public void drawStage(float delta){
 		if(!pause) stage.act(delta);
-//		table.debug();
+		table.debug();
 		stage.draw();
-//		Table.drawDebug(stage);
+		Table.drawDebug(stage);
 	}
 
 	public void setPause(boolean pause) {

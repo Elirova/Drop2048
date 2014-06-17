@@ -16,7 +16,7 @@ public class Block extends Actor {
 	public enum Type {NUMBER, VELINC, VELDEC, RESET, RANDOM, EXTRA, BOMB}
 	
 	// Variables estáticas
-	protected static int NUMBLOCKS = 5, SCORESPECIAL = 20, free = NUMBLOCKS;
+	protected static int NUMBLOCKS = 5, SCORESPECIAL = 20, free;
 	protected static Player player;
 	protected static Texture blockTexture;
     protected static NinePatch[] bgBlocks;
@@ -111,6 +111,7 @@ public class Block extends Actor {
     }
     
     public static void initialize(GameScreen game) {
+    	Block.free = NUMBLOCKS;
     	Block.game = game;
     	Block.player = game.getPlayer();
     	Block.blockTexture = new Texture(Gdx.files.internal("Images/blocks.png"));

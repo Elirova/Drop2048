@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -69,7 +70,7 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 
         // Add the AdMob view
         RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(
-        		RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        		LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         adParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 //        adParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 

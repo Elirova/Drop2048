@@ -27,8 +27,8 @@ public class ScoreScreen extends AbstractScreen {
             super();
             status = Status.EASY;
             setBackground("background/bg.png");
-            scroll = new Scroll();
-            initializeScores(status);
+            scroll = new Scroll(false, initializeScores(status));
+//            initializeScores(status);
             
          // Botón para volver a la pantalla anterior
         	backButton = new TextButton("Back", getSkin());
@@ -51,7 +51,7 @@ public class ScoreScreen extends AbstractScreen {
         		    @Override
         			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
         		        status = Status.values()[aux];
-        		        initializeScores(status);
+        		        scroll.setItems(initializeScores(status));
         		        select(aux);
         		        return false;
         		    } 
@@ -84,9 +84,9 @@ public class ScoreScreen extends AbstractScreen {
     		difficultyButton[i].setStyle(skin.get((i == aux)? "red"+(aux+1) : "default", TextButtonStyle.class));
     }
     
-    public void initializeScores(Status status) {
+    public ScrollItem[] initializeScores(Status status) {
         if(Profile.getMaxScore(status) == 0) { // No hay ninguna puntuación máxima
-        	scroll.setItems(null);
+        	return null;
         } else {
         	ArrayList<Vector3> intitems = Profile.getScore(status);
         	ArrayList<ScrollItem> items = new ArrayList<ScrollItem>();
@@ -94,8 +94,7 @@ public class ScoreScreen extends AbstractScreen {
         		if(item.x <= 0) break;
         		else items.add(new ScrollItem(item));
         	}
-            scroll.setItems(items.toArray(new ScrollItem[0]));
+            return items.toArray(new ScrollItem[0]);
         }
-        scroll.setEnabled(false);
     }
 }

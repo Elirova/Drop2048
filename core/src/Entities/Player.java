@@ -20,8 +20,11 @@ public class Player extends Block {
 			color = (color+1)%11;
 		}
 		number = (int)Math.pow(base, pow);
-		bg2 = bgBlocks[pow];
-		bg1 = bgBlocks[color];
+		bgColor = bgBlocks[pow-1];
+		bgBlock = bgColors[color];
+		
+		float width = font.getBounds(String.valueOf(number)).width;
+    	scaleFont  = (sizeSmall < width)? (size)/(width*3) : (sizeSmall*0.65f)/80f;
 	}
 	
 	public void move(float x) {

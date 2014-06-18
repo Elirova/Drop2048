@@ -3,10 +3,7 @@ package PopUps;
 import screenControl.AbstractScreen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -16,7 +13,6 @@ import drop2048.Drop2048;
 
 public abstract class PopUp {
 	protected static Drop2048 game;
-	protected Texture popupTexture;
 	protected Stage popUpStage;
 	protected Table table;
 	protected Background bg;
@@ -25,7 +21,6 @@ public abstract class PopUp {
 	
 	public PopUp(Batch batch) {
 		visible = false;
-		popupTexture = new Texture(Gdx.files.internal("Images/popup.png"));
 		popUpStage = new Stage(new ScreenViewport(), batch);
 		h = Gdx.graphics.getHeight();
         w = Gdx.graphics.getWidth();
@@ -77,7 +72,6 @@ public abstract class PopUp {
 	}
 	
 	public void dispose() {
-		popupTexture.dispose();
 		popUpStage.dispose();
 	}
 }

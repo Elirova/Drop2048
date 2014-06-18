@@ -9,11 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class MenuBg extends Actor {
 	private NinePatch bg, bgScore;
+	private boolean haveBgScore;
 	private static float endMenu, w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
 	
-	public MenuBg() {
+	public MenuBg(boolean haveBgScore) {
+		this.haveBgScore = haveBgScore;
 		bg = AbstractScreen.getSkin().getPatch("bg-menu");
-		bgScore = AbstractScreen.getSkin().getPatch("bg-score");
+		bgScore = (haveBgScore)? AbstractScreen.getSkin().getPatch("bg-score") : null;
 		setBounds(0, Drop2048.myRequestHandler.getHeightAd(), w, h*0.14f);
 		MenuBg.endMenu = getHeight() + Drop2048.myRequestHandler.getHeightAd();
 	}
@@ -25,7 +27,9 @@ public class MenuBg extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		bg.draw(batch, getX(), getY(), getWidth(), getHeight());
-		bgScore.draw(batch, getX()+w*0.05f, getY()+h*0.01f, w*0.3f, h*0.12f);
-		bgScore.draw(batch, getX()+w*0.65f, getY()+h*0.01f, w*0.3f, h*0.12f);
+		if(haveBgScore) {
+			bgScore.draw(batch, getX()+w*0.05f, getY()+h*0.01f, w*0.3f, h*0.12f);
+			bgScore.draw(batch, getX()+w*0.65f, getY()+h*0.01f, w*0.3f, h*0.12f);
+		}
 	}
 }

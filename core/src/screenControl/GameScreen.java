@@ -49,7 +49,7 @@ public class GameScreen extends AbstractScreen {
             Block.setGameScreen(this);
             
             // Inicialización de la zona de menú y puntuaciones
-            menu = new MenuBg(); 
+            menu = new MenuBg(true); 
             bg.setZIndex(0);
             menu.setZIndex(4);
         	stage.addActor(menu);
@@ -99,7 +99,7 @@ public class GameScreen extends AbstractScreen {
     }
     
     public Block getNewBlock() {
-    	int rand = 1 + (int)(Math.random()*50);
+    	int rand = 1 + (int)(Math.random()*30);
     	switch(rand) {
 	    	case 1:
 	    		return new Block(Type.VELDEC);
@@ -123,7 +123,7 @@ public class GameScreen extends AbstractScreen {
     		if(color == 0) mult = 1;
     		else {
     			color--;
-    			mult = 11-mult;
+    			mult = 11+mult;
     		}
     	} else if(mult > 11) {
     		mult = mult%11;

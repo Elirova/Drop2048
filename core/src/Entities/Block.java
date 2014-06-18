@@ -5,6 +5,7 @@ import screenControl.GameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -21,7 +22,7 @@ public class Block extends Actor {
 	protected static int NUMBLOCKS = 5, SCORESPECIAL = 20, free;
 	protected static Player player;
 	protected static Texture blockTexture;
-    protected static NinePatch[] bgBlocks;
+    protected static NinePatch[] bgBlocks, bgColors;
     protected static int size, h, w, sizeSmall;
     protected static boolean pos[]; // Posiciones libres en las que puede aparecen un bloque
     protected static GameScreen game;
@@ -31,7 +32,7 @@ public class Block extends Actor {
 	protected int base, pow, number, color;
 	protected Rectangle bounds;
 	protected TextureRegion img;
-    protected NinePatch bg1, bg2;
+    protected NinePatch bgBlock, bgColor;
 	protected Type type;
 	protected float scaleFont;
 	
@@ -44,14 +45,13 @@ public class Block extends Actor {
     	this.base = base;
     	this.number = (int) Math.pow(base, this.pow);
     	this.color = color;
-    	String num = String.valueOf(number);
-    	float width = font.getBounds(num).width;
-    	scaleFont  = (sizeSmall < width)? (sizeSmall*0.8f)/(width*num.length()) : (sizeSmall*0.65f)/80f;
+    	float width = font.getBounds(String.valueOf(number)).width;
+    	scaleFont  = (sizeSmall < width)? (size)/(width*3) : (sizeSmall*0.65f)/80f;
     	createBlock();
     	
     	if(this instanceof Player) {
     		setBounds((w*0.5f)-(size/2f), Drop2048.myRequestHandler.getHeightAd()+h*0.15f, size, size);
-    	} else {
+    	} else if(!(this instanceof ScoreBlock)) {
     		locateBlock();
     	}
     }
@@ -77,35 +77,27 @@ public class Block extends Actor {
     	}
     }
     
-    private void createBlock() {
+    protected void createBlock() {
     	switch(type) {
     		case NUMBER:
-    			bg1 = bgBlocks[color];
-    			bg2 = bgBlocks[pow];
+    			bgBlock = bgColors[color];
+    			bgColor = bgBlocks[pow-1];
     			break;
-			case BOMB:
-				bg1 = bgBlocks[16];
-				img = new TextureRegion(blockTexture, 28, 0, 32, 32);
-				break;
-			case EXTRA:
-				bg1 = bgBlocks[15];
-    			img = new TextureRegion(blockTexture, 28, 32, 32, 32);
-				break;
-			case RANDOM:
-				bg1 = bgBlocks[14];
-    			img = new TextureRegion(blockTexture, 60, 0, 32, 32);
+			case VELINC:
+				bgBlock = bgBlocks[14];
+    			img = new TextureRegion(blockTexture, 64, 0, 64, 64);
 				break;
 			case RESET:
-    			bg1 = bgBlocks[13];
-    			img = new TextureRegion(blockTexture, 60, 32, 32, 32);
+    			bgBlock = bgBlocks[13];
+    			img = new TextureRegion(blockTexture, 64, 64, 64, 64);
 				break;
 			case VELDEC:
-    			bg1 = bgBlocks[12];
-    			img = new TextureRegion(blockTexture, 92, 0, 32, 32);
+    			bgBlock = bgBlocks[12];
+    			img = new TextureRegion(blockTexture, 128, 0, 64, 64);
 				break;
-			case VELINC:
-    			bg1 = bgBlocks[11];
-    			img = new TextureRegion(blockTexture, 92, 32, 32, 32);
+			case RANDOM:
+    			bgBlock = bgBlocks[11];
+    			img = new TextureRegion(blockTexture, 128, 64, 64, 64);
 				break;
 			default:
 				break;
@@ -116,19 +108,26 @@ public class Block extends Actor {
     	return bgBlocks;
     }
     
+    public static NinePatch[] getBgColors() {
+    	return bgBlocks;
+    }
+    
     public static void setGameScreen(GameScreen game) {
     	Block.game = game;
     	Block.player = game.getPlayer();
+    	Block.free = NUMBLOCKS;
     }
     
     public static void initialize() {
-    	Block.free = NUMBLOCKS;
     	Block.blockTexture = new Texture(Gdx.files.internal("Images/blocks.png"));
+    	Block.blockTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	bgBlocks = new NinePatch[18];
+    	bgColors = new NinePatch[18];
     	int cont = 0;
     	for(int j = 0; j < 6; j++) {
     		for(int i = 0; i < 3; i++, cont++) {
     			bgBlocks[cont] = new NinePatch(new TextureRegion(blockTexture, i*9, j*9, 9, 9), 4, 4, 4, 4);
+    			bgColors[cont] = new NinePatch(new TextureRegion(blockTexture, i*9+32, j*9, 9, 9), 4, 4, 4, 4);
     		}
     	}
     	h = Gdx.graphics.getHeight();
@@ -171,7 +170,8 @@ public class Block extends Actor {
 				game.addScore(SCORESPECIAL);
 				break;
 			case RANDOM: // Te da un número aleatorio
-				player.setNumber(game.getRandom(), 1 + (int)(Math.random()*11), 0); // Te da un número aleatorio posible
+				player.setNumber(game.getRandom(), 1 + (int)(Math.random()*11), 
+						(int)(Math.random()*(player.getNumberColor()+1))); // Te da un número aleatorio posible
 				game.addScore(SCORESPECIAL);
 				break;
 			case VELDEC: // Baja la velocidad
@@ -192,21 +192,13 @@ public class Block extends Actor {
 		return number;
 	}
 
-	public void resetNumber(int number) {
-		this.number = this.base = number;
-		pow = 1;
-		color = 0;
-		bg1 = bgBlocks[color];
-		bg2 = bgBlocks[pow];
-	}
-
 	public void setNumber(int base, int mult, int color) {
 		this.number = (int) Math.pow(base, mult);
 		this.base = base;
 		this.color = color;
 		pow = mult;
-		bg1 = bgBlocks[color];
-		bg2 = bgBlocks[pow];
+		bgBlock = bgColors[color];
+		bgColor = bgBlocks[pow-1];
 	}
 	
 	public int getCont() {
@@ -241,7 +233,7 @@ public class Block extends Actor {
     	if (bounds.y <= Drop2048.myRequestHandler.getHeightAd()+h*0.15f+size && collides()) {
     		apply();
     		game.removeEntity(this);
-    	} else if(bounds.y < h*0.1f) dead();
+    	} else if(bounds.y < Drop2048.myRequestHandler.getHeightAd()) dead();
     }
     
     public void dead() {
@@ -252,9 +244,9 @@ public class Block extends Actor {
     
     @Override
 	public void draw(Batch batch, float parentAlpha){
-    	bg1.draw(batch, bounds.x, bounds.y, bounds.width, bounds.height);
+    	bgBlock.draw(batch, bounds.x, bounds.y, bounds.width, bounds.height);
     	if(type == Type.NUMBER) {
-    		bg2.draw(batch, bounds.x+size*0.05f, bounds.y+size*0.05f, sizeSmall, sizeSmall);
+    		bgColor.draw(batch, bounds.x+size*0.05f, bounds.y+size*0.05f, sizeSmall, sizeSmall);
     		float scale = font.getScaleY();
     		font.setScale(scaleFont);
     		font.drawMultiLine(batch, String.valueOf(number), bounds.x, bounds.y + size/2 + font.getCapHeight()/2, size, BitmapFont.HAlignment.CENTER);

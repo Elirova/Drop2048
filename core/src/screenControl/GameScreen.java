@@ -26,7 +26,7 @@ public class GameScreen extends AbstractScreen {
 	private WinLosePopUp winLosePopUp;
 	private Player player;
 	protected MenuBg menu;
-	private int h, w;
+	private int h, w, cont;
 	private float velocity;
 	private float time;
 	Random random;
@@ -42,11 +42,13 @@ public class GameScreen extends AbstractScreen {
             h = Gdx.graphics.getHeight();
         	w = Gdx.graphics.getWidth();
         	time = 0;
+        	cont = 0;
         	random = new Random();
         	
             // Inicializaciones de clase
             GamePausePopUp.setScreen(this);
             Block.setGameScreen(this);
+            Block.resetPositions();
             
             // Inicialización de la zona de menú y puntuaciones
             menu = new MenuBg(true); 
@@ -99,20 +101,16 @@ public class GameScreen extends AbstractScreen {
     }
     
     public Block getNewBlock() {
-    	int rand = 1 + (int)(Math.random()*30);
-    	switch(rand) {
-	    	case 1:
-	    		return new Block(Type.VELDEC);
-	    	case 3:
-	    	case 4:
-	    		return new Block(Type.VELINC);
-	    	case 5:
-	    		return new Block(Type.RANDOM);
-	    	case 6:
-	    		return new Block(Type.RESET);
-	    	default:
-	    		return getNewNumberBlock();
-    	}
+    	int rand = random.nextInt(100);
+    	
+    	if(rand < 4) return new Block(Type.VELDEC);
+    	else if(rand < 8) return new Block(Type.VELINC);
+    	else if(rand < 9) return new Block(Type.RANDOM);
+    	else if(rand < 10) return new Block(Type.RESET);
+		
+    	Block block = getNewNumberBlock();
+		if(block == player) cont = 0;
+		return block;
     }
     
     public Block getNewNumberBlock() {
@@ -131,6 +129,10 @@ public class GameScreen extends AbstractScreen {
     	}
 
     	return new Block(Type.NUMBER, getRandom(), mult, color);
+    }
+    
+    private Block getSameBlock() {
+    	return new Block(Type.NUMBER, player.getBase(), player.getPow(), player.getNumberColor());
     }
     
     public void winGame() {
@@ -179,10 +181,17 @@ public class GameScreen extends AbstractScreen {
     }
     
     private void checkForBlock() {
-    	float change = 5 - velocity*0.025f;
+    	float change = 5 - velocity*0.01f;
     	if(time >= change) {
 			time -= change;
-			if(Block.getFree() > status.getMinFree()) addBlock(getNewBlock()); // Queda más de un hueco libre
+			if(Block.getFree() > status.getMinFree()) {
+				cont++;
+				if(cont == Block.NUMBLOCKS) {
+					addBlock(getSameBlock());
+					cont = 0;
+				}
+				else addBlock(getNewBlock()); // Queda más de un hueco libre
+			}
 		}
     }
     
@@ -206,6 +215,7 @@ public class GameScreen extends AbstractScreen {
         table.add().width(w*0.3f);
         table.add().width(w*0.3f);
         table.row();
+        table.setZIndex(2);
         table.add("Score", "white");
         table.add();
         table.add("Best", "white");
@@ -214,7 +224,7 @@ public class GameScreen extends AbstractScreen {
         table.add(menuButton).size(w*0.2f, h*0.05f);
         table.add(maxScore);
         table.row();
-        table.add().height(heightAd+h*0.02f);
+        table.add().height(heightAd+h*0.01f);
     }
     
     public Player getPlayer(){

@@ -15,15 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import drop2048.Drop2048;
 
-public class Block extends Actor {
+public class Block extends Actor implements Comparable<Block> {
 	public enum Type {NUMBER, VELINC, VELDEC, RESET, RANDOM, EXTRA, BOMB}
 	
 	// Variables estáticas
-	protected static int NUMBLOCKS = 5, SCORESPECIAL = 20, free;
+	public static int NUMBLOCKS = 5, SCORESPECIAL = 20, free;
 	protected static Player player;
 	protected static Texture blockTexture;
     protected static NinePatch[] bgBlocks, bgColors;
-    protected static int size, h, w, sizeSmall;
+    protected static int size = 1, h, w, sizeSmall;
     protected static boolean pos[]; // Posiciones libres en las que puede aparecen un bloque
     protected static GameScreen game;
     protected static BitmapFont font;
@@ -45,8 +45,8 @@ public class Block extends Actor {
     	this.base = base;
     	this.number = (int) Math.pow(base, this.pow);
     	this.color = color;
-    	float width = font.getBounds(String.valueOf(number)).width;
-    	scaleFont  = (sizeSmall < width)? (size)/(width*3) : (sizeSmall*0.65f)/80f;
+    	
+    	scaleFont = calculateScaleFont(font, number, sizeSmall);
     	createBlock();
     	
     	if(this instanceof Player) {
@@ -62,6 +62,14 @@ public class Block extends Actor {
     
     public Block(int base, int mult, int color) {
     	this(Type.NUMBER, base, mult, color);
+    }
+    
+    protected float calculateScaleFont(BitmapFont font, int number, int size) {
+    	float width = font.getBounds(String.valueOf(number)).width;
+    	System.out.println((width > size*0.8f));
+    	return (width > size*0.8f)? 
+    			(size*0.9f*font.getScaleX())/font.getBounds(String.valueOf(number)).width 
+    			: (size*0.5f*font.getScaleY())/font.getCapHeight();
     }
     
     private void locateBlock() {
@@ -80,23 +88,23 @@ public class Block extends Actor {
     protected void createBlock() {
     	switch(type) {
     		case NUMBER:
-    			bgBlock = bgColors[color];
-    			bgColor = bgBlocks[pow-1];
+    			bgColor = bgColors[color];
+    			bgBlock = bgBlocks[pow-1];
     			break;
 			case VELINC:
-				bgBlock = bgBlocks[14];
+				bgColor = bgBlocks[14];
     			img = new TextureRegion(blockTexture, 64, 0, 64, 64);
 				break;
 			case RESET:
-    			bgBlock = bgBlocks[13];
+				bgColor = bgBlocks[13];
     			img = new TextureRegion(blockTexture, 64, 64, 64, 64);
 				break;
 			case VELDEC:
-    			bgBlock = bgBlocks[12];
+				bgColor = bgBlocks[12];
     			img = new TextureRegion(blockTexture, 128, 0, 64, 64);
 				break;
 			case RANDOM:
-    			bgBlock = bgBlocks[11];
+				bgColor = bgBlocks[11];
     			img = new TextureRegion(blockTexture, 128, 64, 64, 64);
 				break;
 			default:
@@ -109,7 +117,7 @@ public class Block extends Actor {
     }
     
     public static NinePatch[] getBgColors() {
-    	return bgBlocks;
+    	return bgColors;
     }
     
     public static void setGameScreen(GameScreen game) {
@@ -135,10 +143,14 @@ public class Block extends Actor {
     	size = (int) (w*((1-(0.04f*(NUMBLOCKS+1)))/NUMBLOCKS));
     	sizeSmall = (int) (size*0.9f);
     	pos = new boolean[NUMBLOCKS];
+    	resetPositions();
+    	font = AbstractScreen.getFont();
+    }
+    
+    public static void resetPositions() {
     	for(int i = 0; i < NUMBLOCKS; i++) {
     		pos[i] = true;
     	}
-    	font = AbstractScreen.getFont();
     }
     
     public static void setEnemy(Player block) {
@@ -167,11 +179,12 @@ public class Block extends Actor {
 				break;
 			case RESET: // Te vuelve a un número primo de tu dificultad
 				player.setNumber(game.getRandom(), 1, 0);
+				game.setVelocity(game.getStatus().getVelocity());
 				game.addScore(SCORESPECIAL);
 				break;
 			case RANDOM: // Te da un número aleatorio
-				player.setNumber(game.getRandom(), 1 + (int)(Math.random()*11), 
-						(int)(Math.random()*(player.getNumberColor()+1))); // Te da un número aleatorio posible
+				player.setNumber(game.getRandom(), (int)(1 + Math.random()*10), 
+						player.getNumberColor()); // Te da un número aleatorio posible
 				game.addScore(SCORESPECIAL);
 				break;
 			case VELDEC: // Baja la velocidad
@@ -197,8 +210,9 @@ public class Block extends Actor {
 		this.base = base;
 		this.color = color;
 		pow = mult;
-		bgBlock = bgColors[color];
-		bgColor = bgBlocks[pow-1];
+		bgColor = bgColors[color];
+		bgBlock = bgBlocks[pow-1];
+		scaleFont  = calculateScaleFont(font, number, size);
 	}
 	
 	public int getCont() {
@@ -213,6 +227,14 @@ public class Block extends Actor {
 		return bounds;
 	}
 
+	public int getPow() {
+		return pow;
+	}
+
+	public int getBase() {
+		return base;
+	}
+	
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
@@ -244,16 +266,21 @@ public class Block extends Actor {
     
     @Override
 	public void draw(Batch batch, float parentAlpha){
-    	bgBlock.draw(batch, bounds.x, bounds.y, bounds.width, bounds.height);
+    	bgColor.draw(batch, bounds.x, bounds.y, bounds.width, bounds.height);
     	if(type == Type.NUMBER) {
-    		bgColor.draw(batch, bounds.x+size*0.05f, bounds.y+size*0.05f, sizeSmall, sizeSmall);
+    		bgBlock.draw(batch, bounds.x+size*0.05f, bounds.y+size*0.05f, sizeSmall, sizeSmall);
     		float scale = font.getScaleY();
     		font.setScale(scaleFont);
-    		font.drawMultiLine(batch, String.valueOf(number), bounds.x, bounds.y + size/2 + font.getCapHeight()/2, size, BitmapFont.HAlignment.CENTER);
+    		font.drawMultiLine(batch, String.valueOf(number), bounds.x, bounds.y + size*0.55f + font.getCapHeight()/2, size, BitmapFont.HAlignment.CENTER);
     		font.setScale(scale);
     	} else {
     		batch.draw(img, bounds.x, bounds.y, bounds.getWidth()/2, bounds.getHeight()/2, 
             		bounds.getWidth(), bounds.getHeight(), 1, 1, getRotation());
     	}
     }
+
+	@Override
+	public int compareTo(Block block) {
+		return(block.getBase()==this.getBase() && block.getPow() == this.getPow() && block.getNumberColor() == this.getNumberColor())? 1 : -1;
+	}
 }

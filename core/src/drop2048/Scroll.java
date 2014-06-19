@@ -71,7 +71,7 @@ public class Scroll extends ScrollPane {
             float itemY = getHeight();
            
             if(items == null){
-            		font.drawWrapped(batch, emptyLabel, getX(), Scroll.getHeight()/2,
+            		font.drawWrapped(batch, emptyLabel, getX(), Scroll.getHeight()*0.7f,
             				getWidth(), BitmapFont.HAlignment.CENTER);
                     return;
             }
@@ -92,17 +92,16 @@ public class Scroll extends ScrollPane {
                 	items[i].getBlock().draw(batch, parentAlpha);
 
                 	// Puntuación
-                	float scale = fontWhite.getScaleY();
+                	float scale = fontWhite.getScaleX();
                 	if(multiline) {
                 		float height = fontWhite.getWrappedBounds(items[i].getLabel(), getWidth()*0.7f).height;
-                		fontWhite.setScale((height > itemSize*0.6f)? (itemSize*0.6f*scale)/fontWhite.getWrappedBounds(items[i].getLabel(), getWidth()*0.7f).height
-                				: itemSize/(getWidth()*0.8f));
+                		fontWhite.setScale((height > itemSize*0.6f)? (itemSize*0.6f*scale)/height
+                				: (itemSize)/(getWidth()*0.9f));
                 		fontWhite.drawWrapped(batch, items[i].getLabel(),
                                  x + textOffsetX + getWidth()*0.3f, y + itemY - itemSize*0.3f, getWidth()*0.7f);
                 	} else {
                 		fontWhite.setScale(itemSize/(getWidth()*0.7f));
-                    	fontWhite.drawWrapped(batch, items[i].getLabel(),
-                                 x + textOffsetX + getWidth()*0.3f, y + itemY - itemSize/2, getWidth()*0.7f);
+                    	fontWhite.draw(batch, items[i].getLabel(), x + textOffsetX + getWidth()*0.3f, y + itemY - itemSize/2);
                 	}
                 	
                 	fontWhite.setScale(scale);
@@ -160,6 +159,7 @@ public class Scroll extends ScrollPane {
         public ScrollItem(Vector3 values, String label){
             points = (int) values.x;
             this.label = label;
+//            block = new ScoreBlock(Type.NUMBER, 2, (int)values.y, (int)values.z, (int)(itemSize*0.8f), true);
             block = new ScoreBlock(Type.NUMBER, points, (int)values.y, (int)values.z, (int)(itemSize*0.8f), true);
 			if(bg == null) bg = AbstractScreen.getSkin().getPatch("bg-score-transparent");
         }
@@ -187,6 +187,7 @@ public class Scroll extends ScrollPane {
             		type = Type.VELINC;
             		break;
             }
+//            block = new ScoreBlock(Type.NUMBER, 1, (int)values.x, (int)values.y, (int)(itemSize*0.8f), false);
             block = new ScoreBlock(type, 1, (int)values.x, (int)values.y, (int)(itemSize*0.8f), false);
 			if(bg == null) bg = AbstractScreen.getSkin().getPatch("bg-score-transparent");
         }
@@ -209,6 +210,7 @@ public class Scroll extends ScrollPane {
             		type = Type.VELINC;
             		break;
             }
+//            block = new ScoreBlock(Type.NUMBER, 1, 2, 4, (int)(itemSize*0.8f), false);
             block = new ScoreBlock(type, (int)(itemSize*0.8f), false);
 			if(bg == null) bg = AbstractScreen.getSkin().getPatch("bg-score-transparent");
         }

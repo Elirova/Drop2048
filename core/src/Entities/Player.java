@@ -15,16 +15,15 @@ public class Player extends Block {
 		game.addScore(pow*multScore*2);
 		pow++;
 		if(pow > 11) {
-			pow = 1;
+			pow = pow%11;
 			multScore++;
 			color = (color+1)%11;
 		}
 		number = (int)Math.pow(base, pow);
-		bgColor = bgBlocks[pow-1];
-		bgBlock = bgColors[color];
+		bgBlock = bgBlocks[pow-1];
+		bgColor = bgColors[color];
 		
-		float width = font.getBounds(String.valueOf(number)).width;
-    	scaleFont  = (sizeSmall < width)? (size)/(width*3) : (sizeSmall*0.65f)/80f;
+    	scaleFont = calculateScaleFont(font, number, sizeSmall);
 	}
 	
 	public void move(float x) {
@@ -34,10 +33,8 @@ public class Player extends Block {
 		setX(bounds.x);
 	}
 	
-	public int getPow() {
-		return pow;
-	}
-
+	
+	
 	@Override
 	public void setBounds(float x, float y, float width, float height) {
 		bounds = new Rectangle(x, y, width, height);

@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class GameSelectScreen  extends AbstractScreen {
 	public enum Status {
-		EASY(h*0.1f, h*0.001f, 5, "Easy", 3), 
-		NORMAL(h*0.12f, h*0.0011f, 5, "Normal", 2), 
-		HARD(h*0.15f, h*0.0013f,  3, "Hard", 1),
-		EXTREME(h*0.18f, h*0.0015f, 3, "Extreme", 1);
+		EASY(h*0.15f, h*0.0012f, 5, "Easy", 3), 
+		NORMAL(h*0.2f, h*0.0013f, 5, "Normal", 2), 
+		HARD(h*0.24f, h*0.0015f, 3, "Hard", 1),
+		EXTREME(h*0.28f, h*0.0017f, 3, "Extreme", 1);
 		
 		int velocity, interval, minFree;
 		float incVel;

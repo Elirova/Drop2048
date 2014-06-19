@@ -11,6 +11,8 @@ public class ScoreBlock extends Block {
 		super(type, base, pow, color);
 		this.sizeBlock = size;
 		this.showNumber = showNumber;
+		scaleFont = calculateScaleFont(font, number, (int)(sizeBlock*0.6f));
+		System.out.println(scaleFont);
 	}
 	
 	public ScoreBlock(Type type, int size, boolean showNumber) {
@@ -25,13 +27,13 @@ public class ScoreBlock extends Block {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha){
-		bgBlock.draw(batch, getX() - sizeBlock*0.1f, getY() - sizeBlock*0.1f, sizeBlock*0.8f, sizeBlock*0.8f);
+		bgColor.draw(batch, getX() - sizeBlock*0.1f, getY() - sizeBlock*0.1f, sizeBlock*0.8f, sizeBlock*0.8f);
     	if(type == Type.NUMBER) {
-    		bgColor.draw(batch, getX(), getY(), sizeBlock*0.6f, sizeBlock*0.6f);
+    		bgBlock.draw(batch, getX(), getY(), sizeBlock*0.6f, sizeBlock*0.6f);
     		if(showNumber) {
 	    		float scale = font.getScaleY();
 	    		font.setScale(scaleFont);
-	    		font.drawMultiLine(batch, String.valueOf(number), getX(), getY() + sizeBlock*0.55f, sizeBlock*0.6f, BitmapFont.HAlignment.CENTER);
+	    		font.drawMultiLine(batch, String.valueOf(number), getX() - sizeBlock*0.1f, getY() + sizeBlock*0.55f, sizeBlock*0.8f, BitmapFont.HAlignment.CENTER);
 	    		font.setScale(scale);
     		}
     	} else {

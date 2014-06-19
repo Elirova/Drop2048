@@ -40,13 +40,13 @@ public class TutorialScreen extends AbstractScreen {
     	// Initialize menu's background
     	menu = new MenuBg(false); 
         bg.setZIndex(0);
-        menu.setZIndex(4);
+        menu.setZIndex(1);
     	stage.addActor(menu);
     	
     	// Initialize player
 //    	player = new ScoreBlock(Type.NUMBER, 2, 2, 3, (int)(w*0.2f), true);
     	player = new Player(2);
-    	player.setZIndex(5);
+    	player.setZIndex(3);
     	stage.addActor(player);   
     	
     	player.addListener(new DragListener() {

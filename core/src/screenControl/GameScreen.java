@@ -27,11 +27,12 @@ public class GameScreen extends AbstractScreen {
 	private Player player;
 	protected MenuBg menu;
 	private int h, w, cont;
-	private float velocity;
-	private float time;
+	private float velocity, prevel;
+	private float time, timeSlow;
 	Random random;
 	private Label score, maxScore;
 	private int scoreint, maxScoreint;
+	private boolean slow;
 	
 	private static TextButton menuButton;
 
@@ -41,8 +42,9 @@ public class GameScreen extends AbstractScreen {
             this.status = status;
             h = Gdx.graphics.getHeight();
         	w = Gdx.graphics.getWidth();
-        	time = 0;
-        	cont = 0;
+        	time = cont = 0;
+        	timeSlow = prevel = 0;
+        	slow = false;
         	random = new Random();
         	
             // Inicializaciones de clase
@@ -103,10 +105,11 @@ public class GameScreen extends AbstractScreen {
     public Block getNewBlock() {
     	int rand = random.nextInt(100);
     	
-    	if(rand < 4) return new Block(Type.VELDEC);
-    	else if(rand < 8) return new Block(Type.VELINC);
-    	else if(rand < 9) return new Block(Type.RANDOM);
-    	else if(rand < 10) return new Block(Type.RESET);
+    	if(rand < 3) return new Block(Type.VELDEC);
+    	else if(rand < 7) return new Block(Type.VELINC);
+    	else if(rand < 8) return new Block(Type.RANDOM);
+    	else if(rand < 9) return new Block(Type.RESET);
+    	else if(rand < 10) return new Block(Type.SLOW);
 		
     	Block block = getNewNumberBlock();
 		if(block == player) cont = 0;
@@ -178,6 +181,20 @@ public class GameScreen extends AbstractScreen {
     	super.render(delta);
     	time += delta;
     	checkForBlock();
+    	if(slow) {
+    		timeSlow -= delta;
+    		if(timeSlow <= 0) {
+    			slow = false;
+    			velocity = prevel;
+    		}
+    	}
+    }
+    
+    public void setSlow(int time) {
+    	slow = true;
+    	prevel = velocity;
+    	timeSlow = time;
+    	velocity = status.getVelocity();
     }
     
     private void checkForBlock() {
@@ -262,8 +279,10 @@ public class GameScreen extends AbstractScreen {
 	}
 	
 	public void changeVelocity(float change) {
-		this.velocity += change;
-		if(velocity < status.getVelocity()) velocity = status.getVelocity();
+		if(!slow) {
+			this.velocity += change;
+			if(velocity < status.getVelocity()) velocity = status.getVelocity();
+		}
 	}
 	
 	public void updateVelocity() {

@@ -12,7 +12,6 @@ public class ScoreBlock extends Block {
 		this.sizeBlock = size;
 		this.showNumber = showNumber;
 		scaleFont = calculateScaleFont(font, number, (int)(sizeBlock*0.6f));
-		System.out.println(scaleFont);
 	}
 	
 	public ScoreBlock(Type type, int size, boolean showNumber) {

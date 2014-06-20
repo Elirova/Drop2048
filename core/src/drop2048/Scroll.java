@@ -209,6 +209,9 @@ public class Scroll extends ScrollPane {
             	case 14:
             		type = Type.VELINC;
             		break;
+            	case 15:
+            		type = Type.SLOW;
+            		break;
             }
 //            block = new ScoreBlock(Type.NUMBER, 1, 2, 4, (int)(itemSize*0.8f), false);
             block = new ScoreBlock(type, (int)(itemSize*0.8f), false);

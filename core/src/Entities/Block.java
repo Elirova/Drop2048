@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import drop2048.Drop2048;
 
 public class Block extends Actor implements Comparable<Block> {
-	public enum Type {NUMBER, VELINC, VELDEC, RESET, RANDOM, EXTRA, BOMB}
+	public enum Type {NUMBER, VELINC, VELDEC, RESET, RANDOM, SLOW, BOMB}
 	
 	// Variables estáticas
 	public static int NUMBLOCKS = 5, SCORESPECIAL = 20, free;
@@ -66,7 +66,6 @@ public class Block extends Actor implements Comparable<Block> {
     
     protected float calculateScaleFont(BitmapFont font, int number, int size) {
     	float width = font.getBounds(String.valueOf(number)).width;
-    	System.out.println((width > size*0.8f));
     	return (width > size*0.8f)? 
     			(size*0.9f*font.getScaleX())/font.getBounds(String.valueOf(number)).width 
     			: (size*0.5f*font.getScaleY())/font.getCapHeight();
@@ -107,6 +106,9 @@ public class Block extends Actor implements Comparable<Block> {
 				bgColor = bgBlocks[11];
     			img = new TextureRegion(blockTexture, 128, 64, 64, 64);
 				break;
+			case SLOW:
+				bgColor = bgBlocks[15];
+				img = new TextureRegion(blockTexture, 192, 0, 64, 64);
 			default:
 				break;
     	}
@@ -170,9 +172,6 @@ public class Block extends Actor implements Comparable<Block> {
 			case BOMB: // Quitar todos los bloques de la escena
 				game.addScore(SCORESPECIAL);
 				break;
-			case EXTRA: // Añadir un segundo bloque de jugador
-				game.addScore(SCORESPECIAL);
-				break;
 			case NUMBER:
 				if(number == player.getNumber()) player.updateNumber();
 				else game.loseGame();// Pierdes la partida
@@ -180,20 +179,22 @@ public class Block extends Actor implements Comparable<Block> {
 			case RESET: // Te vuelve a un número primo de tu dificultad
 				player.setNumber(game.getRandom(), 1, 0);
 				game.setVelocity(game.getStatus().getVelocity());
-				game.addScore(SCORESPECIAL);
 				break;
 			case RANDOM: // Te da un número aleatorio
 				player.setNumber(game.getRandom(), (int)(1 + Math.random()*10), 
 						player.getNumberColor()); // Te da un número aleatorio posible
-				game.addScore(SCORESPECIAL);
+				game.addScore(SCORESPECIAL/2);
 				break;
 			case VELDEC: // Baja la velocidad
 				game.changeVelocity(game.getStatus().getIncreaseVelocity()*(-10));
-				game.addScore(SCORESPECIAL);
 				break;
 			case VELINC: // Sube la velocidad
 				game.changeVelocity(game.getStatus().getIncreaseVelocity()*15);
 				game.addScore(SCORESPECIAL);
+				break;
+			case SLOW: // Sube la velocidad
+				game.setSlow(10);
+				game.addScore(SCORESPECIAL/2);
 				break;
 			default:
 				break;

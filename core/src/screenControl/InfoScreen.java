@@ -54,12 +54,13 @@ public class InfoScreen extends AbstractScreen {
     
     public ScrollItem[] initializeInfo() {
     	if(items == null) {
-    		items = new ScrollItem[5];
+    		items = new ScrollItem[6];
     		items[0] = new ScrollItem(new Vector3(2, 6, 4), "Catch the numbers with the same color and number than yours.");
-    		items[1] = new ScrollItem(11, "Get a random number");
-    		items[2] = new ScrollItem(13, "Return to initial number and velocity");
-    		items[3] = new ScrollItem(12, "Decrease speed");
-    		items[4] = new ScrollItem(14, "Increase speed");
+    		items[1] = new ScrollItem(11, "Get a random number.");
+    		items[2] = new ScrollItem(13, "Return to initial number and speed.");
+    		items[3] = new ScrollItem(12, "Decrease speed.");
+    		items[4] = new ScrollItem(14, "Increase speed.");
+    		items[5] = new ScrollItem(15, "Return to initial speed for a few seconds.");
     	}
 
        return items;

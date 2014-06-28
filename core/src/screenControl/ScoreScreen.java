@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
+import drop2048.Drop2048;
 import drop2048.Scroll;
 import drop2048.Scroll.ScrollItem;
 
@@ -74,9 +75,9 @@ public class ScoreScreen extends AbstractScreen {
         	table.row();
         	table.add().height(h*0.02f);
         	table.row();
-        	table.add(backButton).size(w*0.4f, h*0.07f).colspan(4);
+        	table.add(backButton).size(w, h*0.07f).colspan(4);
         	table.row();
-        	table.add().size(0,h*0.1f);
+        	table.add().size(0,Drop2048.myRequestHandler.getHeightAd());
     }
     
     public void select(int aux) {

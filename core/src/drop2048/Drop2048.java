@@ -41,9 +41,7 @@ public class Drop2048 extends Game implements ApplicationListener  {
 		profile = ProfileSerializer.read();
 	}
 	
-	public static void clearProfile() {
-		
-	}
+	public static void clearProfile() {	}
 	
 	@Override
 	public void dispose() {

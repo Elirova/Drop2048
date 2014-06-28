@@ -29,17 +29,16 @@ public class WinLosePopUp extends PopUp {
 	}
 	
 	protected void initializeWinTable() {
-		table.add("HAS GANADO");
+		table.add("YOU WIN!");
 	}
 	
 	protected void initializeLoseTable() {
-		table.add("HAS PERDIDO");
-		table.row();
-		table.add(String.valueOf(((GameScreen)game.getScreen()).getScore()));
+		table.add("YOU LOSE!");
+		
 	}
 	
 	private void initializeCommonTable() {
-		backButton = new TextButton("Back to MainMenu", AbstractScreen.getSkin());
+		backButton = new TextButton("Back to MainMenu", AbstractScreen.getSkin(), "round-gray-white");
 		backButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
@@ -47,6 +46,16 @@ public class WinLosePopUp extends PopUp {
 		        return false;
 		    } 
 		} );
+		table.add().height(h*0.15f);
+		table.row();
+		table.add("Score:");
+		table.row();
+		table.add(String.valueOf(((GameScreen)game.getScreen()).getScore()));
+		table.row();
+		if(((GameScreen)game.getScreen()).getScore() >= ((GameScreen)game.getScreen()).getMaxScore()) {
+			table.add("New record!!", "white").spaceTop(h*0.03f).spaceBottom(h*0.03f);
+			table.row();
+		} else table.add().height(h*0.1f);
 		table.row();
 		table.add(backButton);
 	}

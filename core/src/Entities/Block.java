@@ -192,13 +192,10 @@ public class Block extends Actor implements Comparable<Block> {
 				game.changeVelocity(game.getStatus().getIncreaseVelocity()*15);
 				game.addScore(SCORESPECIAL);
 				break;
-			case SLOW: // Sube la velocidad
+			case SLOW: // Baja la velocidad durante un corto periodo de tiempo
 				game.setSlow(10);
 				game.addScore(SCORESPECIAL/2);
 				break;
-			default:
-				break;
-    	
     	}
     }
     
@@ -274,10 +271,8 @@ public class Block extends Actor implements Comparable<Block> {
     		font.setScale(scaleFont);
     		font.drawMultiLine(batch, String.valueOf(number), bounds.x, bounds.y + size*0.55f + font.getCapHeight()/2, size, BitmapFont.HAlignment.CENTER);
     		font.setScale(scale);
-    	} else {
-    		batch.draw(img, bounds.x, bounds.y, bounds.getWidth()/2, bounds.getHeight()/2, 
+    	} else batch.draw(img, bounds.x, bounds.y, bounds.getWidth()/2, bounds.getHeight()/2, 
             		bounds.getWidth(), bounds.getHeight(), 1, 1, getRotation());
-    	}
     }
 
 	@Override

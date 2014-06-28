@@ -24,7 +24,7 @@ public abstract class PopUp {
 		popUpStage = new Stage(new ScreenViewport(), batch);
 		h = Gdx.graphics.getHeight();
         w = Gdx.graphics.getWidth();
-		bg = new Background(w*0.2f, h*0.2f, w*0.6f, h*0.6f); 
+		bg = new Background(w*0.2f, h*0.2f, w*0.6f, h*0.6f, "button-round-gray"); 
 		popUpStage.addActor(bg);
 		initializeTable();
 	}
@@ -35,7 +35,6 @@ public abstract class PopUp {
 	}
 	
 	public void show() {
-//		Gdx.input.setInputProcessor(popUpStage);
 		setVisible(true);
 	}
 	

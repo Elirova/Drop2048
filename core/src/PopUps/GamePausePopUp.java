@@ -27,7 +27,7 @@ public class GamePausePopUp extends PopUp {
 	@Override
 	protected void initializeTable() {
 		super.initializeTable();
-		resumeButton = new TextButton("Resume", AbstractScreen.getSkin());
+		resumeButton = new TextButton("Resume", AbstractScreen.getSkin(), "round-green");
 		resumeButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
@@ -36,7 +36,7 @@ public class GamePausePopUp extends PopUp {
 		    } 
 		} );
 		
-		resetButton = new TextButton("Reset", AbstractScreen.getSkin());
+		resetButton = new TextButton("Restart", AbstractScreen.getSkin(), "round-gray-white");
 		resetButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
@@ -45,7 +45,7 @@ public class GamePausePopUp extends PopUp {
 		    } 
 		} );
 		
-		exitButton = new TextButton("Exit", AbstractScreen.getSkin());
+		exitButton = new TextButton("Exit", AbstractScreen.getSkin(), "round-gray-white");
 		exitButton.addListener(new InputListener() { 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { 
@@ -58,14 +58,14 @@ public class GamePausePopUp extends PopUp {
 		table.row();
 		table.add().height(h*0.03f);
 		table.row();
-		table.add(resumeButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.1f);
+		table.add(resumeButton).size(Gdx.graphics.getWidth()*0.4f, Gdx.graphics.getHeight()*0.1f);
 		table.row();
 		table.add().height(h*0.03f);
 		table.row();
-		table.add(resetButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.1f);
+		table.add(resetButton).size(Gdx.graphics.getWidth()*0.4f, Gdx.graphics.getHeight()*0.1f);
 		table.row();
 		table.add().height(h*0.03f);
 		table.row();
-		table.add(exitButton).size(Gdx.graphics.getWidth()*0.3f, Gdx.graphics.getHeight()*0.1f);
+		table.add(exitButton).size(Gdx.graphics.getWidth()*0.4f, Gdx.graphics.getHeight()*0.1f);
 	}
 }

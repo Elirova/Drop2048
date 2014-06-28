@@ -73,10 +73,10 @@ public class GameSelectScreen  extends AbstractScreen {
 	}
 
 	private void createButtons() {
-		bEasy = new TextButton("Easy", getSkin(), "red1");
-		bNormal = new TextButton("Normal", getSkin(), "red2");
-		bHard = new TextButton("Hard", getSkin(), "red3");
-		bHardcore = new TextButton("Hardcore", getSkin(), "red4");
+		bEasy = new TextButton(Status.EASY.getName(), getSkin(), "red1");
+		bNormal = new TextButton(Status.NORMAL.getName(), getSkin(), "red2");
+		bHard = new TextButton(Status.HARD.getName(), getSkin(), "red3");
+		bHardcore = new TextButton(Status.EXTREME.getName(), getSkin(), "red4");
 		
 		bEasy.addListener(new InputListener() {
 		    @Override

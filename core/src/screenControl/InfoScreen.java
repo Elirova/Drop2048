@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+import drop2048.Drop2048;
 import drop2048.Scroll;
 import drop2048.Scroll.ScrollItem;
 
@@ -47,20 +48,20 @@ public class InfoScreen extends AbstractScreen {
     	table.row();
     	table.add().height(h*0.02f);
     	table.row();
-    	table.add(backButton).size(w*0.4f, h*0.07f).colspan(4);
+    	table.add(backButton).size(w, h*0.07f).colspan(4);
     	table.row();
-    	table.add().size(0,h*0.1f);
+    	table.add().size(0,Drop2048.myRequestHandler.getHeightAd());
     }
     
     public ScrollItem[] initializeInfo() {
     	if(items == null) {
     		items = new ScrollItem[6];
-    		items[0] = new ScrollItem(new Vector3(2, 6, 4), "Catch the numbers with the same color and number than yours.");
-    		items[1] = new ScrollItem(11, "Get a random number.");
-    		items[2] = new ScrollItem(13, "Return to initial number and speed.");
-    		items[3] = new ScrollItem(12, "Decrease speed.");
-    		items[4] = new ScrollItem(14, "Increase speed.");
-    		items[5] = new ScrollItem(15, "Return to initial speed for a few seconds.");
+    		items[0] = new ScrollItem(new Vector3(2, 6, 4), "Catch the numbers with the same color and number than yours");
+    		items[1] = new ScrollItem(11, "Get a random number");
+    		items[2] = new ScrollItem(13, "Return to initial number and speed");
+    		items[3] = new ScrollItem(12, "Decrease speed");
+    		items[4] = new ScrollItem(14, "Increase speed");
+    		items[5] = new ScrollItem(15, "Return to initial speed for a few seconds");
     	}
 
        return items;

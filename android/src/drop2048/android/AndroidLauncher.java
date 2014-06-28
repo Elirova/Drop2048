@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -22,6 +23,7 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 	protected AdView adView;
 	private final int SHOW_ADS = 1;
     private final int HIDE_ADS = 0;
+    EasyTracker tracker;
 	
 	protected Handler handler = new Handler(){
         @Override
@@ -37,7 +39,8 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
         }
     };
 	
-    @Override public void onCreate (Bundle savedInstanceState) {
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
@@ -58,10 +61,7 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
         adView.setAdUnitId("ca-app-pub-3934997582029072/4099321345");
         adView.setAdSize(AdSize.SMART_BANNER);
 
-        AdRequest adRequest = new AdRequest.Builder()
-        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       	// Emulator
-        .addTestDevice("022AQQ7N39069749") 					// My Huawei test
-        .build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         
         adView.loadAd(adRequest);
 
@@ -72,13 +72,26 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
         RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(
         		LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         adParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//        adParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         layout.addView(adView, adParams);
         adView.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
 
         // Hook it all up
         setContentView(layout);
+    }
+    
+    @Override
+    public void onStart() {
+    	super.onStart();
+    	tracker = EasyTracker.getInstance(this);
+    	tracker.activityStart(this);
+    }
+    
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	tracker.activityStop(this);  // Add this method.
+//      EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
     
 //	@Override

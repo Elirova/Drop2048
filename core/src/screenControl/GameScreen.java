@@ -214,7 +214,7 @@ public class GameScreen extends AbstractScreen {
     
     private void initializeTable() {
     	// Inicialize buttons
-		menuButton = new TextButton("Menu", skin);
+		menuButton = new TextButton("_", skin, "round-green");
     	
         // Add listeners to buttons
         menuButton.addListener(new InputListener() { 
@@ -238,7 +238,7 @@ public class GameScreen extends AbstractScreen {
         table.add("Best", "white");
         table.row();
         table.add(score);
-        table.add(menuButton).size(w*0.2f, h*0.05f);
+        table.add(menuButton).size(w*0.1f, h*0.07f);
         table.add(maxScore);
         table.row();
         table.add().height(heightAd+h*0.01f);
@@ -250,6 +250,10 @@ public class GameScreen extends AbstractScreen {
 
     public int getScore() {
     	return scoreint;
+    }
+    
+    public int getMaxScore() {
+    	return Profile.getMaxScore(status);
     }
     
     public void setScore(int score) {

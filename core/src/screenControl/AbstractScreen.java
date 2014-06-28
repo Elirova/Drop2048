@@ -170,6 +170,8 @@ public abstract class AbstractScreen implements Screen {
 	public static void disposeStatic() {
 		if (font != null)
             font.dispose();
+		if (fontWhite != null)
+			fontWhite.dispose();
 		if (skin != null)
 			skin.dispose();
 	}
